@@ -1,0 +1,62 @@
+<button  class="pointer add-button p1 w-100 btn info" (click)="dialog.showModal()">Add product</button>
+<dialog #dialog id="modal" class="dialog">
+  <h3>{{isEdit ? 'Edit product':'Add product'}}</h3>
+<div [formGroup]="formGroup">
+  <div class="p1" >
+    <label>Code:</label><br>
+    <input class="w-100" formControlName="codeText" type="text">
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('codeText')?.touched || formGroup.get('codeText')?.dirty)&& formGroup.get('codeText')?.hasError('required')">
+    <sup>*</sup>Code is required
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('codeText')?.touched || formGroup.get('codeText')?.dirty )&& formGroup.get('codeText')?.hasError('minlength')">
+    <sup>*</sup>Field must be minimum 2 characters long
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('codeText')?.touched || formGroup.get('codeText')?.dirty )&&formGroup.get('codeText')?.hasError('maxlength')">
+    <sup>*</sup>Field must be maximum 4 characters long
+  </div>
+  <div class="invalid-feedback" *ngIf=" (formGroup.get('codeText')?.touched || formGroup.get('codeText')?.dirty )&& formGroup.get('codeText')?.hasError('pattern')">
+    <sup>*</sup>Field cannot contain numbers and special characters
+  </div>
+  <div class="p1" >
+    <label>Serial number:</label><br>
+    <input class="w-100" formControlName="serialNumber" type="number">
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('serialNumber')?.touched || formGroup.get('serialNumber')?.dirty)&& formGroup.get('serialNumber')?.hasError('required')">
+    <sup>*</sup>Serial number is required
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('serialNumber')?.touched || formGroup.get('serialNumber')?.dirty )&& formGroup.get('serialNumber')?.hasError('minlength')">
+    <sup>*</sup>Field must be minimum 4 characters long
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('serialNumber')?.touched || formGroup.get('serialNumber')?.dirty )&&formGroup.get('serialNumber')?.hasError('maxlength')">
+    <sup>*</sup>Field must be maximum 6 characters long
+  </div>
+  <div class="p1">
+    <label>Floor:</label><br>
+    <select class="w-100" formControlName="floor">
+      <option class="w-100" [value]="floor.id" *ngFor="let floor of floors">Floor: {{floor.id}}</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="(formGroup.get('floor')?.touched || formGroup.get('floor')?.dirty)&& formGroup.get('floor')?.hasError('required')">
+      <sup>*</sup>Floor number is required
+    </div>
+  </div>
+
+  <div class="p1">
+    <label>Section:</label><br>
+    <input class="w-100" formControlName="section" type="number">
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('section')?.touched || formGroup.get('section')?.dirty)&& formGroup.get('section')?.hasError('required')">
+    <sup>*</sup>Section number is required
+  </div>
+  <div class="p1">
+    <label>Quantity:</label><br>
+    <input class="w-100" formControlName="quantity" type="number">
+  </div>
+  <div class="invalid-feedback" *ngIf="(formGroup.get('quantity')?.touched || formGroup.get('quantity')?.dirty)&& formGroup.get('quantity')?.hasError('required')">
+    <sup>*</sup>Quantity number is required
+  </div>
+</div>
+  <div class="invalid-feedback p1" *ngIf="isDuplicate"><sup>*</sup>{{errorMessage}}</div>
+  <button class="btn danger w-100 m-b-1" (click)="closeDialog(dialog)">Close</button>
+  <button class="btn w-100" [ngClass]="formGroup.invalid?'disabled': 'success'" [disabled]="formGroup.invalid" (click)="submit(dialog)">Confirm</button>
+</dialog>

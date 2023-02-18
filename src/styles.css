@@ -1,1 +1,56 @@
-/* You can add global styles to this file, and also import other style files */
+.scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 450px;
+}
+.body {
+  display: flex;
+
+}
+.main {
+  width: 50%;
+  border: solid;
+  border-radius: 5px;
+  overflow-y: hidden;
+  height: 500px
+}
+.p1 {
+  padding: 10px;
+}
+.m-b-1{
+  margin-bottom: 10px;
+}
+.w-100 {
+  width: 100%;
+}
+.btn {
+  border: none; /* Remove borders */
+  border-radius: 10px;
+  color: white; /* Add a text color */
+  padding: 14px 28px; /* Add some padding */
+  cursor: pointer;
+}
+
+.disabled {
+  background-color: lightgray;
+  cursor: auto;
+}
+
+.success {background-color: #04AA6D;} /* Green */
+.success:hover {background-color: #46a049;}
+
+.info {background-color: #2196F3;} /* Blue */
+.info:hover {background: #0b7dda;}
+
+.warning {background-color: #ff9800;} /* Orange */
+.warning:hover {background: #e68a00;}
+
+.danger {background-color: #f44336;} /* Red */
+.danger:hover {background: #da190b;}
+
+.default {background-color: #e7e7e7; color: black;} /* Gray */
+.default:hover {background: #ddd;}
+
+.invalid-feedback {
+  color: #E91E63;
+}

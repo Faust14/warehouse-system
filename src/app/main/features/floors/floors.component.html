@@ -1,0 +1,22 @@
+<div class="main">
+  <div class="body">
+    <div class="floors" [ngClass]="sections.length>1 ? 'scroll':''">
+      <div>
+        <h2>Filters:</h2>
+        <input [formControl]="search" type="text">
+      </div>
+      <h2>Floors:</h2>
+      <div *ngFor="let floor of floors" >
+        <h3 class="pointer" *ngIf="floor.products.length>0" (click)="setProducts(floor)">{{floor.name}}</h3>
+      </div>
+      <h2>Sections:</h2>
+      <div *ngFor="let section of sections;">
+        <h3 class="pointer" (click)="filterBySection(section)">{{section === 0 ? 'Select all' : 'Section '+section}}</h3>
+      </div>
+      <button class="pointer p1 w-100 btn warning" (click)="reset()">Reset filter</button>
+      <app-create-edit-product #createEdit [floors]="this.floors"></app-create-edit-product>
+    </div>
+    <div class="line"></div>
+    <app-product [products]="products" (productEmitter)="setProduct($event)"></app-product>
+  </div>
+</div>

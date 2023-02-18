@@ -1,0 +1,16 @@
+<div [ngClass]="products.length>4 ? 'scroll':''" >
+  <div class="title p1">
+    <label *ngIf="products.length>1">{{products.length}} products</label>
+    <label *ngIf="products.length === 1">{{products.length}} product</label>
+  </div>
+  <div *ngFor="let product of products" class="product">
+    <div>
+    <label class="code">{{product.code}}</label><br>
+    <label>Quantity: {{product.quantity}}</label><br>
+    <label>Location: {{product.floor}} / {{product.section}}</label><br>
+    </div>
+    <div class="buttons">
+    <button class=" custom-btn " (click)="emitProduct(product)">Edit</button>
+    </div>
+  </div>
+</div>
