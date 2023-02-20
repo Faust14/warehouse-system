@@ -52,13 +52,13 @@ export class CreateEditProductComponent implements OnInit {
     }
     this.floors.forEach(floor => {
       if (floor.id === floorId) {
-        let duplicate = floor.products.find(value => (value.floor === floorId && value.section === sectionId) || !this.isEdit ? value.code === code : false);
+        let duplicate = floor.products.find(value => (value.floor === floorId && value.section === sectionId) || value.code === code );
         this.isDuplicate = !!duplicate;
-        if (duplicate) {
-          this.errorMessage = duplicate.code === code ? 'Product with this code already exist' : 'There is another product on this location';
-        } else {
-          this.floors[product.floor - 1].products.push(product);
-        }
+          if(duplicate) {
+            this.errorMessage = duplicate.code === code ? 'Product with this code already exist' : 'There is another product on this location';
+          } else {
+            this.floors[product.floor - 1].products.push(product);
+          }
       } else {
         let index = floor.products.findIndex(value => value.code === product.code);
         if (index > -1) floor.products.splice(index, 1);

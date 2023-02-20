@@ -11,7 +11,7 @@ import {
 import {Subject, merge, Observable} from 'rxjs';
 
 @Component({
-  selector: 'app-floors',
+  selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
