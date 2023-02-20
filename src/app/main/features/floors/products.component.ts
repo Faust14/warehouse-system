@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Floor, Product} from "../../models/product-model";
 import {UntypedFormControl} from "@angular/forms";
 import {ProductService} from "../../services/product.service";
@@ -18,7 +18,7 @@ import {Subject, merge, Observable} from 'rxjs';
 export class ProductsComponent implements OnInit, OnDestroy {
 
   @ViewChild('createEdit')
-  modal:any;
+  modal: any;
   floors: Floor[];
   search = new UntypedFormControl('');
   sections: number[] = [];
@@ -26,41 +26,29 @@ export class ProductsComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   checkedFloor: Floor;
   fetch$ = new Subject<void>();
-  constructor(private service: ProductService, private cdr: ChangeDetectorRef) {
+
+  constructor(private service: ProductService) {
   }
 
   ngOnInit() {
-    this.initData();
     this.createSearchTerm();
+    this.fetch$.next();
   }
 
   createSearchTerm() {
-    merge(this.searchTerm(),this.fetch$).pipe(
-      switchMap(() => {
-       return  this.getAllProducts()
-      }),
+    merge(this.searchTerm(), this.fetch$).pipe(
+      switchMap(() => this.getAllProducts()),
       takeUntil(this.destroy$)
     ).subscribe(res => {
-      if(this.search.value) {
-        res.forEach((value: Floor) => {
-          value.products = value.products.filter((product: Product) => product.code.toLowerCase().includes(this.search.value.toLowerCase()));
-        });
-      }
+      this.floors = [];
       this.products = [];
+      this.sections = [];
+      this.checkedFloor = null!;
       this.floors = res;
-      this.floors.forEach(floor => {
-        floor.products.forEach(product => {
-          this.products.push(product);
-        })
+      this.floors.forEach((value: Floor) => {
+        value.products = value.products.filter((product: Product) => product.code.toLowerCase().includes(this.search.value.toLowerCase()));
+        this.products = this.products.concat(value.products);
       })
-      this.cdr.markForCheck();
-    })
-  }
-  initData() {
-    this.getAllProducts().pipe(takeUntil(this.destroy$)).subscribe(res => {
-      this.floors = res;
-      this.setAllProducts();
-      this.sections = [0]
     })
   }
 
@@ -70,8 +58,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   searchTerm(): Observable<string> {
     return this.search.valueChanges.pipe(
-      debounceTime(2000),
-      distinctUntilChanged())
+      debounceTime(300),
+      distinctUntilChanged()
+    )
   }
 
   setProducts(floor: Floor): void {
@@ -80,7 +69,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.sections = this.service.createSections(this.products);
   }
 
-  filterBySection(section: number):void {
+  filterBySection(section: number): void {
     this.products = this.checkedFloor.products;
     if (this.checkedFloor.name) {
       if (section !== 0) {
@@ -90,26 +79,23 @@ export class ProductsComponent implements OnInit, OnDestroy {
       }
     }
   }
-  setAllProducts():void {
-    this.floors.forEach(floor => {
-      floor.products.forEach(product => {
-        this.products.push(product);
-      })
-    })
-  }
 
   reset(): void {
     this.checkedFloor = null!;
-    this.products = [];
-    this.sections = [0];
-    this.floors = [];
     this.search.setValue('');
     this.fetch$.next();
   }
 
-  setProduct(event: Product): void{
-    this.modal.showDialog(event);
+  setProduct(product: Product): void {
+    this.modal.showDialog(product);
   }
+
+  isSubmited(isSubmited: boolean) {
+    if (isSubmited) {
+      this.fetch$.next();
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
   }

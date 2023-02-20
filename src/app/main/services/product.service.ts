@@ -87,7 +87,15 @@ export class ProductService {
   }
 
   getAllProducts(): Observable<Floor[]> {
-    return this.floors$;
+    const floors:Floor[] =[];
+    this._floors$.getValue().forEach(res=> {
+      floors.push({
+        id: res.id,
+        name: res.name,
+        products: res.products.slice(0)
+      });
+    })
+    return new Observable<Floor[]>(observer=> {observer.next(floors)});
   }
   createEditProduct(floors: Floor[]): any {
    this._floors$.next(floors);

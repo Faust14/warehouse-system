@@ -14,7 +14,7 @@
         <h3 class="pointer" (click)="filterBySection(section)">{{section === 0 ? 'Select all' : 'Section '+section}}</h3>
       </div>
       <button class="pointer p1 w-100 btn warning" (click)="reset()">Reset filter</button>
-      <app-create-edit-product #createEdit [floors]="this.floors"></app-create-edit-product>
+      <app-create-edit-product (isSubmited)="isSubmited($event)" #createEdit [floors]="this.floors"></app-create-edit-product>
     </div>
     <div class="line"></div>
     <app-product [products]="products" (productEmitter)="setProduct($event)"></app-product>

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProductService} from "../../services/product.service";
 import {Floor, Product} from "../../models/product-model";
@@ -20,7 +20,8 @@ export class CreateEditProductComponent implements OnInit {
   errorMessage: string;
   isDuplicate: boolean;
   product: Product;
-
+  @Output()
+  isSubmited = new EventEmitter<boolean>();
   constructor(private service: ProductService, public fb: FormBuilder) {
   }
 
@@ -66,7 +67,9 @@ export class CreateEditProductComponent implements OnInit {
     if (!this.isDuplicate) {
       this.service.createEditProduct(this.floors)
       this.isEdit = false;
+      this.formGroup.enable();
       this.formGroup.reset();
+      this.isSubmited.next(true);
       dialog.close();
     }
   }
