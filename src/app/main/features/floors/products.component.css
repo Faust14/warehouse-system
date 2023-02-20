@@ -34,8 +34,16 @@ h3 {
 .pointer {
   cursor: pointer;
 }
-.checked {
-  background-color: orangered;
+.hover:hover {
+  background-color: #2196F3;
+  color: white;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.floor-checked {
+  background-color: #0b7dda;
+  color: white;
   border-radius: 5px;
   width: 100%;
 }

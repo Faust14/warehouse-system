@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { ProductComponent } from './main/features/product/product.component';
 import {SharedModule} from "./shared/shared.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { FloorsComponent } from './main/features/floors/floors.component';
+import { ProductsComponent } from './main/features/floors/products.component';
 import { CreateEditProductComponent } from './main/features/create-edit-product/create-edit-product.component';
 
 
@@ -13,7 +13,7 @@ import { CreateEditProductComponent } from './main/features/create-edit-product/
   declarations: [
     AppComponent,
     ProductComponent,
-    FloorsComponent,
+    ProductsComponent,
     CreateEditProductComponent,
   ],
   imports: [

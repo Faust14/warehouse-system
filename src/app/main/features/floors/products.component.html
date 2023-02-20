@@ -7,7 +7,7 @@
       </div>
       <h2>Floors:</h2>
       <div *ngFor="let floor of floors" >
-        <h3 class="pointer" *ngIf="floor.products.length>0" (click)="setProducts(floor)">{{floor.name}}</h3>
+        <h3 class="pointer hover" [ngClass]="checkedFloor?.id === floor.id ? 'floor-checked':''" *ngIf="floor.products.length>0" (click)="setProducts(floor)">{{floor.name}}</h3>
       </div>
       <h2>Sections:</h2>
       <div *ngFor="let section of sections;">

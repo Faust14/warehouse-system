@@ -43,7 +43,9 @@
 
   <div class="p1">
     <label>Section:</label><br>
-    <input class="w-100" formControlName="section" type="number">
+    <select class="w-100" formControlName="floor">
+      <option class="w-100" [value]="floor.id" *ngFor="let floor of floors">Floor: {{floor.id}}</option>
+    </select>
   </div>
   <div class="invalid-feedback" *ngIf="(formGroup.get('section')?.touched || formGroup.get('section')?.dirty)&& formGroup.get('section')?.hasError('required')">
     <sup>*</sup>Section number is required
@@ -58,5 +60,6 @@
 </div>
   <div class="invalid-feedback p1" *ngIf="isDuplicate"><sup>*</sup>{{errorMessage}}</div>
   <button class="btn danger w-100 m-b-1" (click)="closeDialog(dialog)">Close</button>
-  <button class="btn w-100" [ngClass]="formGroup.invalid?'disabled': 'success'" [disabled]="formGroup.invalid" (click)="submit(dialog)">Confirm</button>
+  <button class="btn m-b-1 w-100" [ngClass]="formGroup.invalid?'disabled': 'success'" [disabled]="formGroup.invalid" (click)="submit(dialog)">Confirm</button>
+  <button class="btn warning w-100" *ngIf="isEdit" [disabled]="formGroup.invalid" (click)="resetForm()">Reset</button>
 </dialog>

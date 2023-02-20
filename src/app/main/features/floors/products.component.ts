@@ -12,10 +12,10 @@ import {Subject, merge, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-floors',
-  templateUrl: './floors.component.html',
-  styleUrls: ['./floors.component.css']
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css']
 })
-export class FloorsComponent implements OnInit, OnDestroy {
+export class ProductsComponent implements OnInit, OnDestroy {
 
   @ViewChild('createEdit')
   modal:any;
@@ -24,7 +24,7 @@ export class FloorsComponent implements OnInit, OnDestroy {
   sections: number[] = [];
   products: Product[] = [];
   destroy$ = new Subject<void>();
-  choosedFloor: Floor;
+  checkedFloor: Floor;
   fetch$ = new Subject<void>();
   constructor(private service: ProductService, private cdr: ChangeDetectorRef) {
   }
@@ -32,18 +32,15 @@ export class FloorsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initData();
     this.createSearchTerm();
-
   }
 
   createSearchTerm() {
     merge(this.searchTerm(),this.fetch$).pipe(
       switchMap(() => {
-        debugger
        return  this.getAllProducts()
       }),
       takeUntil(this.destroy$)
     ).subscribe(res => {
-      debugger
       if(this.search.value) {
         res.forEach((value: Floor) => {
           value.products = value.products.filter((product: Product) => product.code.toLowerCase().includes(this.search.value.toLowerCase()));
@@ -71,30 +68,29 @@ export class FloorsComponent implements OnInit, OnDestroy {
     return this.service.getAllProducts();
   }
 
-  searchTerm() {
+  searchTerm(): Observable<string> {
     return this.search.valueChanges.pipe(
       debounceTime(2000),
       distinctUntilChanged())
   }
 
   setProducts(floor: Floor): void {
-    this.choosedFloor = floor;
+    this.checkedFloor = floor;
     this.products = new Array<Product>().concat(floor.products);
-    this.sections = this.service.createSections(this.products)
-    this.cdr.markForCheck();
+    this.sections = this.service.createSections(this.products);
   }
 
-  filterBySection(section: number) {
-    this.products = this.choosedFloor.products;
-    if (this.choosedFloor.name) {
+  filterBySection(section: number):void {
+    this.products = this.checkedFloor.products;
+    if (this.checkedFloor.name) {
       if (section !== 0) {
         this.products = this.products.filter((product: Product) => product.section === section);
       } else {
-        this.products = this.choosedFloor.products;
+        this.products = this.checkedFloor.products;
       }
     }
   }
-  setAllProducts() {
+  setAllProducts():void {
     this.floors.forEach(floor => {
       floor.products.forEach(product => {
         this.products.push(product);
@@ -102,8 +98,8 @@ export class FloorsComponent implements OnInit, OnDestroy {
     })
   }
 
-  reset() {
-    this.choosedFloor = null!;
+  reset(): void {
+    this.checkedFloor = null!;
     this.products = [];
     this.sections = [0];
     this.floors = [];
@@ -111,10 +107,10 @@ export class FloorsComponent implements OnInit, OnDestroy {
     this.fetch$.next();
   }
 
-  setProduct(event: Product){
+  setProduct(event: Product): void{
     this.modal.showDialog(event);
   }
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.destroy$.next();
   }
 }
